@@ -1,6 +1,14 @@
+variable "ssh-keyvault-name" {
+  type = "string"
+}
+
+variable "ssh-secret-name" {
+  type = "string"
+}
+
 data "azurerm_key_vault_secret" "csa" {
-  name      = "MacBook-SSH-Public-Key"
-  vault_uri = "https://p-kv-euw-keyvault.vault.azure.net/"
+  name      = "${var.ssh-secret-name}"
+  vault_uri = "https://${var.ssh-keyvault-name}.vault.azure.net/"
 }
 
 resource "azurerm_resource_group" "csa" {
