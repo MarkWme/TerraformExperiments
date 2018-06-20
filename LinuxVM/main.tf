@@ -1,9 +1,8 @@
-variable "ssh-keyvault-name" {
-  type = "string"
-}
-
-variable "ssh-secret-name" {
-  type = "string"
+provider "azurerm" {
+  subscription_id = "${var.subscriptionId}"
+  client_id       = "${var.clientId}"
+  client_secret   = "${var.clientSecret}"
+  tenant_id       = "${var.tenantId}"
 }
 
 data "azurerm_key_vault_secret" "csa" {
@@ -13,7 +12,7 @@ data "azurerm_key_vault_secret" "csa" {
 
 resource "azurerm_resource_group" "csa" {
   name     = "x-rg-euw-csa"
-  location = "West Europe"
+  location = "${var.azureRegion}"
 
   tags {
     "Environment" = "QA Training"
@@ -24,7 +23,7 @@ resource "azurerm_virtual_network" "csa" {
   name                = "x-vn-euw-vnet-01"
   resource_group_name = "${azurerm_resource_group.csa.name}"
   address_space       = ["10.1.0.0/16"]
-  location            = "West Europe"
+  location            = "${var.azureRegion}"
 }
 
 resource "azurerm_subnet" "csa" {
@@ -37,7 +36,7 @@ resource "azurerm_subnet" "csa" {
 
 resource "azurerm_network_security_group" "csa" {
   name                = "x-nsg-euw-nsg"
-  location            = "West Europe"
+  location            = "${var.azureRegion}"
   resource_group_name = "${azurerm_resource_group.csa.name}"
 }
 
@@ -57,14 +56,14 @@ resource "azurerm_network_security_rule" "csa-ssh-rule" {
 
 resource "azurerm_public_ip" "csa" {
   name                         = "x-pip-euw-linuxvm-pip"
-  location                     = "West Europe"
+  location                     = "${var.azureRegion}"
   resource_group_name          = "${azurerm_resource_group.csa.name}"
   public_ip_address_allocation = "static"
 }
 
 resource "azurerm_network_interface" "csa" {
   name                = "x-nic-euw-linxuvm-nic"
-  location            = "West Europe"
+  location            = "${var.azureRegion}"
   resource_group_name = "${azurerm_resource_group.csa.name}"
 
   ip_configuration = {
@@ -77,7 +76,7 @@ resource "azurerm_network_interface" "csa" {
 
 resource "azurerm_virtual_machine" "csa" {
   name                             = "x-vl-euw-linuxvm"
-  location                         = "West Europe"
+  location                         = "${var.azureRegion}"
   resource_group_name              = "${azurerm_resource_group.csa.name}"
   vm_size                          = "Standard_DS1_v2"
   delete_os_disk_on_termination    = true
@@ -115,7 +114,7 @@ resource "azurerm_virtual_machine" "csa" {
 
 resource "azurerm_virtual_machine_extension" "csa" {
   name                 = "x-vx-euw-linuxvm-msi"
-  location             = "West Europe"
+  location             = "${var.azureRegion}"
   resource_group_name  = "${azurerm_resource_group.csa.name}"
   publisher            = "Microsoft.ManagedIdentity"
   type                 = "ManagedIdentityExtensionForLinux"
