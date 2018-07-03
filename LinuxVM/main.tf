@@ -22,8 +22,11 @@ resource "azurerm_resource_group" "csa" {
 resource "azurerm_virtual_network" "csa" {
   name                = "x-vn-euw-vnet-01"
   resource_group_name = "${azurerm_resource_group.csa.name}"
-  address_space       = ["10.1.0.0/16"]
-  location            = "${var.azureRegion}"
+
+  // cidrsubnet function?
+
+  address_space = ["10.1.0.0/16"]
+  location      = "${var.azureRegion}"
 }
 
 resource "azurerm_subnet" "csa" {
