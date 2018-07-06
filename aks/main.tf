@@ -69,6 +69,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     deployed-by = "terraform"
     environment = "${var.environment}"
   }
+
+  kubernetes_version = "1.10.3"
 }
 
 output "id" {
