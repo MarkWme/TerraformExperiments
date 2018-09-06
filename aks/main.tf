@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   agent_pool_profile {
     name            = "apool"
-    count           = 1
+    count           = 3
     vm_size         = "Standard_B2ms"
     os_type         = "Linux"
     os_disk_size_gb = 30
@@ -70,7 +70,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     environment = "${var.environment}"
   }
 
-  kubernetes_version = "1.10.3"
+  kubernetes_version = "1.11.2"
 }
 
 output "id" {
