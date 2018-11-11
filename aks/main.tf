@@ -38,6 +38,18 @@ resource "azurerm_resource_group" "aks" {
   }
 }
 
+resource "azurerm_log_analytics_workspace" "aks" {
+  name                = "${var.environments["${var.environment}"]}-lg-${var.azureRegions["${var.azureRegion}"]}-${var.name}-${random_id.aksname.hex}"
+  location            = "${azurerm_resource_group.aks.location}"
+  resource_group_name = "${azurerm_resource_group.aks.name}"
+  sku                 = "Standalone"
+  retention_in_days   = 30
+  tags = {
+    deployed-by = "terraform"
+    environment = "${var.environment}"
+  }
+}
+
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "${var.environments["${var.environment}"]}-ks-${var.azureRegions["${var.azureRegion}"]}-${var.name}-${random_id.aksname.hex}"
   location            = "${azurerm_resource_group.aks.location}"
@@ -65,12 +77,22 @@ resource "azurerm_kubernetes_cluster" "aks" {
     client_secret = "${data.azurerm_key_vault_secret.aks-client-secret.value}"
   }
 
+  addon_profile {
+    oms_agent {
+      enabled                    = true
+      log_analytics_workspace_id = "${azurerm_log_analytics_workspace.aks.id}"
+    }
+    http_application_routing {
+      enabled = true
+    }
+  }
+
   tags = {
     deployed-by = "terraform"
     environment = "${var.environment}"
   }
 
-  kubernetes_version = "1.11.2"
+  kubernetes_version = "1.11.3"
 }
 
 output "id" {
@@ -95,4 +117,8 @@ output "cluster_ca_certificate" {
 
 output "host" {
   value = "${azurerm_kubernetes_cluster.aks.kube_config.0.host}"
+}
+
+output "http_application_routing_zone_name" {
+  value = "${azurerm_kubernetes_cluster.aks.addon_profile.0.http_application_routing.0.http_application_routing_zone_name}"
 }
