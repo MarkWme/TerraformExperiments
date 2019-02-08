@@ -1,20 +1,20 @@
-variable "subscriptionId" {
+variable "subscription_id" {
   type = "string"
 }
 
-variable "clientId" {
+variable "client_id" {
   type = "string"
 }
 
-variable "clientSecret" {
+variable "client_secret" {
   type = "string"
 }
 
-variable "tenantId" {
+variable "tenant_id" {
   type = "string"
 }
 
-variable "azureRegions" {
+variable "azure_regions" {
   type = "map"
 
   default = {
@@ -23,7 +23,7 @@ variable "azureRegions" {
   }
 }
 
-variable "azureRegion" {
+variable "azure_region" {
   type    = "string"
   default = "westeurope"
 }
@@ -49,23 +49,23 @@ variable "environments" {
   }
 }
 
-variable "ssh-keyvault-name" {
+variable "ssh_keyvault_name" {
   type        = "string"
   description = "The name of the Key Vault instance where the SSH key for the Linux VM is stored. Just the name of the vault, not the URI"
 }
 
-variable "ssh-secret-name" {
+variable "ssh_secret_name" {
   type = "string"
 }
 
-variable "aks-keyvault-name" {
+variable "aks_keyvault_name" {
   type = "string"
 }
 
-variable "aks-sp-clientId" {
+variable "aks_sp_client_id" {
   type = "string"
 }
 
-variable "aks-sp-clientSecret" {
+variable "aks_sp_client_secret" {
   type = "string"
 }

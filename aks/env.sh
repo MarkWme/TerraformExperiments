@@ -10,12 +10,12 @@
 # secrets in it!
 #
 export TF_VAR_accessKey=
-export TF_VAR_aks-keyvault-name=
-export TF_VAR_clientId=
-export TF_VAR_clientSecret=
-export TF_VAR_ssh-keyvault-name=
-export TF_VAR_ssh-secret-name=
-export TF_VAR_subscriptionId=
-export TF_VAR_tenantId=
-export TF_VAR_aks-sp-clientId=
-export TF_VAR_aks-sp-clientSecret=
+export TF_VAR_aks_keyvault_name=
+export TF_VAR_client_id=
+export TF_VAR_client_secret=
+export TF_VAR_ssh_keyvault_name=
+export TF_VAR_ssh_secret_name=
+export TF_VAR_subscription_id=
+export TF_VAR_tenant_id=
+export TF_VAR_aks_sp_client_id=
+export TF_VAR_aks_sp_client_secret=

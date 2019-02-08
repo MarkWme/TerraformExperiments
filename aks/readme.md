@@ -28,13 +28,13 @@ The environment variables below are required to be set before the script is run.
 
 | **Variable** | **Example Value** | **Description** |
 | ------------ | ----------------- | --------------- |
-| **TF_VAR_subscriptionId** | `00000000-0000-0000-0000-000000000000` | ID of the Azure subscription where you will deploy the AKS instance |
-| **TF_VAR_clientId** | `00000000-0000-0000-0000-000000000000` | Client ID used by the AzureRM provider to sign-in to your Azure subscription |
-| **TF_VAR_clientSecret** | `<client secret>` | Secret / password for the Client ID above |
-| **TF_VAR_tenantId** | `00000000-0000-0000-0000-000000000000` | ID of the Azure AD tenant where the above Client ID is kept |
-| **TF_VAR_accessKey** | `<access key>`  | Access key for the Azure Storage account used to hold Terraform state |
-| **TF_VAR_aks-keyvault-name** | `myKeyVault` | Name of the Azure KeyVault instance where the client ID and client secret for the AKS deployment are stored |
-| **TF_VAR_aks-sp-clientId** | `aks-client-id` | Name of the Azure KeyVault secret that holds the client ID to be used for the AKS deployment |
-| **TF_VAR_aks-sp-clientSecret** | `aks-client-secret` | Name of the Azure KeyVault secret that holds the client secret to be used for the AKS deployment |
-| **TF_VAR_ssh-keyvault-name** | `myKeyVault` | Name of the Azure KeyVault instance where the SSH key for the AKS deployment is stored |
-| **TF_VAR_ssh-secret-name** | `sshkey` | Name of the Azure KeyVault secret that holds the SSH key to be used for the AKS deployment |
+| **TF_VAR_subscription_id** | `00000000-0000-0000-0000-000000000000` | ID of the Azure subscription where you will deploy the AKS instance |
+| **TF_VAR_client_id** | `00000000-0000-0000-0000-000000000000` | Client ID used by the AzureRM provider to sign-in to your Azure subscription |
+| **TF_VAR_client_secret** | `<client secret>` | Secret / password for the Client ID above |
+| **TF_VAR_tenant_id** | `00000000-0000-0000-0000-000000000000` | ID of the Azure AD tenant where the above Client ID is kept |
+| **TF_VAR_access_key** | `<access key>`  | Access key for the Azure Storage account used to hold Terraform state |
+| **TF_VAR_aks_keyvault_name** | `myKeyVault` | Name of the Azure KeyVault instance where the client ID and client secret for the AKS deployment are stored |
+| **TF_VAR_aks_sp_client_id** | `aks-client-id` | Name of the Azure KeyVault secret that holds the client ID to be used for the AKS deployment |
+| **TF_VAR_aks_sp_client_secret** | `aks-client-secret` | Name of the Azure KeyVault secret that holds the client secret to be used for the AKS deployment |
+| **TF_VAR_ssh_keyvault_name** | `myKeyVault` | Name of the Azure KeyVault instance where the SSH key for the AKS deployment is stored |
+| **TF_VAR_ssh_secret_name** | `sshkey` | Name of the Azure KeyVault secret that holds the SSH key to be used for the AKS deployment |

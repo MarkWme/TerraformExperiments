@@ -1,27 +1,27 @@
 provider "azurerm" {
-  subscription_id = "${var.subscriptionId}"
-  client_id       = "${var.clientId}"
-  client_secret   = "${var.clientSecret}"
-  tenant_id       = "${var.tenantId}"
+  subscription_id = "${var.subscription_id}"
+  client_id       = "${var.client_id}"
+  client_secret   = "${var.client_secret}"
+  tenant_id       = "${var.tenant_id}"
 }
 
 terraform {
   backend "azurerm" {}
 }
 
-data "azurerm_key_vault_secret" "aks-ssh" {
-  name      = "${var.ssh-secret-name}"
-  vault_uri = "https://${var.ssh-keyvault-name}.vault.azure.net/"
+data "azurerm_key_vault_secret" "aks_ssh" {
+  name      = "${var.ssh_secret_name}"
+  vault_uri = "https://${var.ssh_keyvault_name}.vault.azure.net/"
 }
 
-data "azurerm_key_vault_secret" "aks-client-id" {
-  name      = "${var.aks-sp-clientId}"
-  vault_uri = "https://${var.aks-keyvault-name}.vault.azure.net/"
+data "azurerm_key_vault_secret" "aks_client_id" {
+  name      = "${var.aks_sp_client_id}"
+  vault_uri = "https://${var.aks_keyvault_name}.vault.azure.net/"
 }
 
-data "azurerm_key_vault_secret" "aks-client-secret" {
-  name      = "${var.aks-sp-clientSecret}"
-  vault_uri = "https://${var.aks-keyvault-name}.vault.azure.net/"
+data "azurerm_key_vault_secret" "aks_client_secret" {
+  name      = "${var.aks_sp_client_secret}"
+  vault_uri = "https://${var.aks_keyvault_name}.vault.azure.net/"
 }
 
 resource "random_id" "aksname" {
@@ -29,8 +29,8 @@ resource "random_id" "aksname" {
 }
 
 resource "azurerm_resource_group" "aks" {
-  name     = "${var.environments["${var.environment}"]}-rg-${var.azureRegions["${var.azureRegion}"]}-${var.name}-${random_id.aksname.hex}"
-  location = "${var.azureRegion}"
+  name     = "${var.environments["${var.environment}"]}-rg-${var.azure_regions["${var.azure_region}"]}-${var.name}-${random_id.aksname.hex}"
+  location = "${var.azure_region}"
 
   tags = {
     deployed-by = "terraform"
@@ -39,7 +39,7 @@ resource "azurerm_resource_group" "aks" {
 }
 
 resource "azurerm_log_analytics_workspace" "aks" {
-  name                = "${var.environments["${var.environment}"]}-lg-${var.azureRegions["${var.azureRegion}"]}-${var.name}-${random_id.aksname.hex}"
+  name                = "${var.environments["${var.environment}"]}-lg-${var.azure_regions["${var.azure_region}"]}-${var.name}-${random_id.aksname.hex}"
   location            = "${azurerm_resource_group.aks.location}"
   resource_group_name = "${azurerm_resource_group.aks.name}"
   sku                 = "Standalone"
@@ -51,7 +51,7 @@ resource "azurerm_log_analytics_workspace" "aks" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.environments["${var.environment}"]}-ks-${var.azureRegions["${var.azureRegion}"]}-${var.name}-${random_id.aksname.hex}"
+  name                = "${var.environments["${var.environment}"]}-ks-${var.azure_regions["${var.azure_region}"]}-${var.name}-${random_id.aksname.hex}"
   location            = "${azurerm_resource_group.aks.location}"
   resource_group_name = "${azurerm_resource_group.aks.name}"
   dns_prefix          = "${var.name}-${random_id.aksname.hex}"
@@ -60,7 +60,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     admin_username = "guvnor"
 
     ssh_key {
-      key_data = "${data.azurerm_key_vault_secret.aks-ssh.value}"
+      key_data = "${data.azurerm_key_vault_secret.aks_ssh.value}"
     }
   }
 
@@ -73,8 +73,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   service_principal {
-    client_id     = "${data.azurerm_key_vault_secret.aks-client-id.value}"
-    client_secret = "${data.azurerm_key_vault_secret.aks-client-secret.value}"
+    client_id     = "${data.azurerm_key_vault_secret.aks_client_id.value}"
+    client_secret = "${data.azurerm_key_vault_secret.aks_client_secret.value}"
   }
 
   addon_profile {
@@ -92,7 +92,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     environment = "${var.environment}"
   }
 
-  kubernetes_version = "1.11.3"
+  kubernetes_version = "1.12.4"
 }
 
 output "id" {
